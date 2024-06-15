@@ -39,3 +39,11 @@ luac.out
 *.x86_64
 *.hex
 
+# IntelliJ
+*.iml
+*.ipr
+*.iws
+.idea/
+.idea_modules/
+
+
