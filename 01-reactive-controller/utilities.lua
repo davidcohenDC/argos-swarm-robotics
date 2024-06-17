@@ -31,14 +31,5 @@ function utilities.calculateWheelSpeed(baseSpeed, sign, difference)
     return baseSpeed + sign * difference * baseSpeed
 end
 
---- Function to check if the path ahead is clear
-function utilities.isPathClear(front_sensors)
-    for _, i in ipairs(front_sensors) do
-        if robot.proximity[i].value > CLEAR_PATH_THRESHOLD then
-            return false
-        end
-    end
-    return true
-end
 
 return utilities

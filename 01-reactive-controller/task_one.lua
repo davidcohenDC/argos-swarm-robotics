@@ -3,6 +3,7 @@ MOVE_STEPS = 15                    -- Step interval for random movement
 BASE_VELOCITY = 15                 -- Base velocity for the robot
 LIGHT_THRESHOLD = 1                -- Threshold for light detection
 PROXIMITY_THRESHOLD = 0.15         -- Threshold for proximity sensor (more sensitive)
+OBSTACLE_AVOIDANCE_SPEED_FACTOR = 0.5  -- variabile globale
 CLEAR_PATH_THRESHOLD = 0.02        -- Threshold for determining a clear path
 RANDOM_WALK_STEPS = 40             -- Step interval for random movement
 
@@ -14,6 +15,7 @@ local front_sensors = {1, 2, 3, 4, 5, 6, 19, 20, 21, 22, 23, 24}
 
 ---** Require Utilities **---
 local utilities = require("utilities")
+local proximity = require("proximity")
 
 function init()
     reset()
@@ -41,24 +43,30 @@ end
 local function obstacleAvoidanceTask()
     -- Gets the index and intensity of the maximum proximity sensor
     local maxProximityIndex, maxProximityIntensity = utilities.getMaxSensorReading('proximity', front_sensors)
-    -- If the maximum proximity intensity is high enough, rotate the robot in place
-    if maxProximityIntensity > PROXIMITY_THRESHOLD * 2 then
-        robot.leds.set_all_colors("red")
-        utilities.log("OA - Emergency rotation! maxProximityIndex: " .. maxProximityIndex .. " maxProximityIntensity: " .. maxProximityIntensity)
-        -- Rotate in place
-        robot.wheels.set_velocity(BASE_VELOCITY, -BASE_VELOCITY)
-        return true
-    elseif maxProximityIntensity > PROXIMITY_THRESHOLD then
-        robot.leds.set_all_colors("yellow")
-        utilities.log("OA - maxProximityIndex: " .. maxProximityIndex .. " maxProximityIntensity: " .. maxProximityIntensity)
-        -- Calculates the difference between the right and left side of the robot based on the sensor index with maximum proximity intensity
-        local angle = (maxProximityIndex - 1) * (2 * math.pi / #robot.proximity)
-        local difference = math.sin(angle)
-        local leftWheelSpeed = utilities.calculateWheelSpeed(BASE_VELOCITY * 0.5, 1, difference)
-        local rightWheelSpeed = utilities.calculateWheelSpeed(BASE_VELOCITY * 0.5, -1, difference)
-        robot.wheels.set_velocity(leftWheelSpeed, rightWheelSpeed)
-        return true
+
+    if not proximity.isPathClear(front_sensors) then
+        -- If the maximum proximity intensity is high enough, rotate the robot in place
+        if maxProximityIntensity > PROXIMITY_THRESHOLD * 2 then
+            robot.leds.set_all_colors("red")
+            utilities.log("OA - Emergency rotation! maxProximityIndex: " .. maxProximityIndex .. " maxProximityIntensity: " .. maxProximityIntensity)
+            -- Rotate in place
+            robot.wheels.set_velocity(BASE_VELOCITY, -BASE_VELOCITY)
+            return true
+        elseif maxProximityIntensity > PROXIMITY_THRESHOLD then
+            robot.leds.set_all_colors("yellow")
+            utilities.log("OA - maxProximityIndex: " .. maxProximityIndex .. " maxProximityIntensity: " .. maxProximityIntensity)
+            -- Calculates the difference between the right and left side of the robot based on the sensor index with maximum proximity intensity
+            local angle = (maxProximityIndex - 1) * (2 * math.pi / #robot.proximity)
+            local difference = math.sin(angle)
+            local leftWheelSpeed = utilities.calculateWheelSpeed(BASE_VELOCITY * OBSTACLE_AVOIDANCE_SPEED_FACTOR,
+                    1, difference)
+            local rightWheelSpeed = utilities.calculateWheelSpeed(BASE_VELOCITY * OBSTACLE_AVOIDANCE_SPEED_FACTOR,
+                    -1, difference)
+            robot.wheels.set_velocity(leftWheelSpeed, rightWheelSpeed)
+            return true
+        end
     end
+
 
     return false
 end
@@ -80,21 +88,11 @@ local function randomWalkTask()
 end
 
 function step()
-    if obstacleAvoidanceTask() then
-        -- Continue rotating until the path ahead is clear
-        if utilities.isPathClear(front_sensors) then
-            robot.leds.set_all_colors("green")
-            utilities.log("Path is clear, resuming normal operation")
-            random_walk_steps = 0 -- Reset random walk steps
-        else
-            utilities.log("Rotating to clear path")
-        end
-    elseif not phototaxyTask() then
+    if not obstacleAvoidanceTask() and not phototaxyTask() then
         randomWalkTask()
     end
     return
 end
-
 -- This function is executed every time you press 'reset' in the GUI
 function reset()
     robot.wheels.set_velocity(
