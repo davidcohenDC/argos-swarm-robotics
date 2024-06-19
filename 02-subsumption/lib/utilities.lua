@@ -1,4 +1,4 @@
--- utilities.lua
+--- utilities.lua ---
 
 local utilities = {}
 
@@ -25,18 +25,11 @@ function utilities.log(message)
     end
 end
 
-
 --- Returns wheel speed based on base speed and difference
 function utilities.calculateWheelSpeed(baseSpeed, sign, difference)
     return baseSpeed + sign * difference * baseSpeed
 end
 
---- Returns two wheel speed based on base speed and difference
-function utilities.calculateTwoWheelSpeed(baseSpeed, difference)
-    leftSpeed = baseSpeed + 1 * difference * baseSpeed
-    rightSpeed = baseSpeed - 1 * difference * baseSpeed
-    return leftSpeed, rightSpeed
-end
 
 
 return utilities

@@ -1,4 +1,4 @@
--- priority_queue.lua
+--- priority_queue.lua ---
 
 local PriorityQueue = {}
 PriorityQueue.__index = PriorityQueue

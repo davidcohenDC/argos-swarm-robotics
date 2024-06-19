@@ -1,4 +1,4 @@
--- proximity.lua
+--- proximity.lua ---
 
 local proximity = {}
 

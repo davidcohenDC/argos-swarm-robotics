@@ -3,9 +3,9 @@
 # Configuration
 argos_executable="argos3"  # Path to ARGoS executable if not in PATH
 argos_config_file="test-subs.argos"
-num_simulations=10000
+num_simulations=10
 output_file="test/simulation_results.txt"
-extract_value_string="f_distance"
+extract_value_string="Distance:"
 
 cd ..
 
@@ -15,7 +15,23 @@ if [ ! -f "$argos_config_file" ]; then
     exit 1
 fi
 
-# Function to extract the last f_distance value from the simulation output
+# Parse command-line arguments for number of simulations
+while getopts "n:" opt; do
+    case $opt in
+        n)
+            num_simulations=$OPTARG
+            ;;
+        *)
+            echo "Usage: $0 [-n num_simulations]"
+            exit 1
+            ;;
+    esac
+done
+
+# Use default number of simulations if not provided
+num_simulations=${num_simulations:-$default_num_simulations}
+
+# Function to extract the last Distance value from the simulation output
 extract_distance() {
     echo "$1" | grep "$extract_value_string" | tail -n 1 | awk '{print $2}'
 }
@@ -24,7 +40,7 @@ extract_distance() {
 run_simulation() {
     local i=$1
     echo "Running simulation $i/$num_simulations" >&2
-    output=$($argos_executable -c "$argos_config_file" --no-visualization)
+    output=$($argos_executable -c "$argos_config_file" --no-visualization | sed 's/\x1B\[[0-9;]*[JKmsu]//g')
 
     # Extract the distance from the simulation output
     distance_to_light=$(extract_distance "$output")
@@ -46,3 +62,9 @@ echo "Simulation,Steps,DistanceToLight" > "$output_file"
 
 # Run simulations in parallel and append results to the output file
 parallel -j $(nproc) run_simulation {} ::: $(seq 1 $num_simulations) >> "$output_file"
+
+#wait for all the parallel processes to finish
+wait
+
+# Run the Python script to analyze the results
+python3 test/analyze_results.py

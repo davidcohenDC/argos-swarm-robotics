@@ -1,8 +1,16 @@
+import os
+
 import matplotlib.pyplot as plt
 import pandas as pd
 
 # Read the simulation results
 results_file = 'simulation_results.txt'
+
+# change directory to be in test folder if not already
+
+if os.getcwd().split('/')[-1].lower().count('test') == 0:
+    os.chdir('test')
+
 data = pd.read_csv(results_file)
 
 # Filter out rows with errors
@@ -19,13 +27,6 @@ max_distance = data['DistanceToLight'].max()
 # Define a threshold for success
 success_threshold = 1.0  # Example threshold value
 success_rate = (data['DistanceToLight'] <= success_threshold).mean() * 100
-
-print(f"Mean Distance: {mean_distance:.2f}")
-print(f"Median Distance: {median_distance:.2f}")
-print(f"Standard Deviation: {std_distance:.2f}")
-print(f"Minimum Distance: {min_distance:.2f}")
-print(f"Maximum Distance: {max_distance:.2f}")
-print(f"Success Rate: {success_rate:.2f}%")
 
 # Plot the distances
 plt.figure(figsize=(10, 6))

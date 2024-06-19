@@ -1,16 +1,14 @@
---- obstacle_avoidance.lua
+--- obstacle_avoidance.lua ---
 
-local util = require('utilities')
-local proximity = require('proximity')
+local util = require('lib.utilities')
+local proximity = require('lib.proximity')
 
 local avoid_obstacle = {}
 
 avoid_obstacle.priority = 3
 
-local BASE_VELOCITY = 15
-local PROXIMITY_THRESHOLD = 0.1
+local PROXIMITY_THRESHOLD = 0.15
 local EMERGENCY_VELOCITY_FACTOR = 0.5
-local OBSTACLE_AVOIDANCE_SPEED_FACTOR = 0.5
 local front_sensors = {1, 2, 3, 4, 5, 20, 21, 22, 23, 24}
 
 function avoid_obstacle.init()
@@ -40,8 +38,8 @@ function avoid_obstacle.execute()
         util.log("OA - maxProximityIndex: " .. maxProximityIndex .. " maxProximityIntensity: " .. maxProximityIntensity)
         local angle = (maxProximityIndex - 1) * (2 * math.pi / #robot.proximity)
         local difference = math.sin(angle)
-        local leftWheelSpeed, rightWheelSpeed = util.calculateTwoWheelSpeed(
-                BASE_VELOCITY * OBSTACLE_AVOIDANCE_SPEED_FACTOR,  difference)
+        local leftWheelSpeed = util.calculateWheelSpeed(BASE_VELOCITY, -1, difference)
+        local rightWheelSpeed = util.calculateWheelSpeed(BASE_VELOCITY, 1, difference)
 
         robot.wheels.set_velocity(leftWheelSpeed, rightWheelSpeed)
     end

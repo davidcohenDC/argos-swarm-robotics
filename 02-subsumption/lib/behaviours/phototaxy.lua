@@ -1,11 +1,10 @@
---- phototaxy.lua
+--- phototaxy.lua ---
 
 local phototaxy = {}
-local util = require('utilities')
+local util = require('lib.utilities')
 
 phototaxy.priority = 2
 
-local BASE_VELOCITY = 15
 local MINIMUM_LIGHT_INTENSITY = 0.09
 
 function phototaxy.init()

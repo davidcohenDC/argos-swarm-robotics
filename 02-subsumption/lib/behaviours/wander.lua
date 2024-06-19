@@ -1,19 +1,24 @@
---- wander.lua
+--- wander.lua ---
 
 local wander = {}
-local util = require('utilities')
+
+local util = require('lib.utilities')
 
 wander.priority = 1
 
-local BASE_VELOCITY = 15
-local MAX_WANDER_STEPS = 40
+local MAX_WANDER_STEPS = 60
 
 -- Probabilities
-local PROB_CHANGE_DIRECTION = 0.6  -- Lower probability to change direction
-local PROB_CHANGE_SPEED = 0.5      -- Probability to adjust speed
+--local PROB_CHANGE_DIRECTION = 0.7  -- Probability to change direction
+--local PROB_CHANGE_SPEED = 0.5      -- Probability to adjust speed
+--local DIRECTION_CHANGE_FACTOR = 1  -- Direction change factor
+--local SPEED_ADJUSTMENT_RANGE = 0.2  -- Speed adjustment range (20% of BASE_VELOCITY)
 
-local DIRECTION_CHANGE_FACTOR = 0.2 -- Slight direction change factor
-local SPEED_ADJUSTMENT_RANGE = 0.2  -- Adjust speed within +/-20% of BASE_VELOCITY
+local PROB_CHANGE_DIRECTION = 0.8 -- Lower probability to change direction (higher value of change --> better results)
+local PROB_CHANGE_SPEED = 0.5 -- Probability to adjust speed (dont change much the results)
+local DIRECTION_CHANGE_FACTOR = 0.4 -- Slight direction change factor (higher value means more change )
+local SPEED_ADJUSTMENT_RANGE = 0.2 -- Adjust speed within +/-20% of BASE_VELOCITY (lower value means less change --> better results)
+
 
 local wander_count = 0
 local leftSpeed = 0
