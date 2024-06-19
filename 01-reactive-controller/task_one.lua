@@ -1,11 +1,11 @@
 ---** Constants (Global variables) **---
-MOVE_STEPS = 15                    -- Step interval for random movement
-BASE_VELOCITY = 15                 -- Base velocity for the robot
-LIGHT_THRESHOLD = 1                -- Threshold for light detection
-PROXIMITY_THRESHOLD = 0.15         -- Threshold for proximity sensor (more sensitive)
-OBSTACLE_AVOIDANCE_SPEED_FACTOR = 0.5  -- variabile globale
-CLEAR_PATH_THRESHOLD = 0.02        -- Threshold for determining a clear path
-RANDOM_WALK_STEPS = 40             -- Step interval for random movement
+MOVE_STEPS = 15                         -- Step interval for random movement
+BASE_VELOCITY = 15                      -- Base velocity for the robot
+LIGHT_THRESHOLD = 1                     -- Threshold for light detection
+PROXIMITY_THRESHOLD = 0.15              -- Threshold for proximity sensor (more sensitive)
+OBSTACLE_AVOIDANCE_SPEED_FACTOR = 0.5   -- variabile globale
+CLEAR_PATH_THRESHOLD = 0.02             -- Threshold for determining a clear path
+MAX_RANDOM_WALK_STEPS = 40              -- Step interval for random movement
 
 -- Variables
 local random_walk_steps = 0
@@ -77,7 +77,7 @@ local function randomWalkTask()
         leftSpeed = math.random(0, BASE_VELOCITY)
         rightSpeed = math.random(0, BASE_VELOCITY)
         random_walk_steps = 1
-    elseif random_walk_steps < RANDOM_WALK_STEPS then
+    elseif random_walk_steps < MAX_RANDOM_WALK_STEPS then
         robot.leds.set_all_colors("blue")
         random_walk_steps = random_walk_steps + 1
     else
