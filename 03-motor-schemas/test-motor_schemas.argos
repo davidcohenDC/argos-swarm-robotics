@@ -87,7 +87,7 @@
     <distribute>
       <position method="uniform" min="-2.9,-2.9,0" max="-2,2.9,0" />
       <orientation method="uniform" min="0,0,0" max="360,0,0" />
-      <entity quantity="10" max_trials="100">
+      <entity quantity="1" max_trials="100">
         <foot-bot id="fb1">
           <controller config="lua" />
         </foot-bot>
@@ -119,8 +119,8 @@
     <qt-opengl lua_editor="false">
       <camera>
 				<placements>
-					<placement index="0" position="-3.8703,0.22,3.8703" look_at="-3.16319,0.22,3.16319" lens_focal_length="20" />
-					<placement index="1" position="-0.0901378,-0.0141263,4.99426" look_at="-0.080138,-0.0141263,3.99431" lens_focal_length="20" />
+                    <placement index="0" position="-0.0901378,-0.0141263,4.99426" look_at="-0.080138,-0.0141263,3.99431" lens_focal_length="20" />
+					<placement index="1" position="-3.8703,0.22,3.8703" look_at="-3.16319,0.22,3.16319" lens_focal_length="20" />
 				</placements>
       </camera>
     </qt-opengl>
