@@ -7,7 +7,7 @@
   <!-- ************************* -->
   <framework>
     <system threads="0" />
-    <experiment length="0"
+    <experiment length="4000"
                 ticks_per_second="10" />
     />
   </framework>
@@ -67,7 +67,7 @@
         <box id="o1" size="0.8, 0.2, 0.8" movable="false" />
       </entity>
     </distribute>
-    
+
     <distribute>
       <position method="uniform" min="-2,-2.5,0" max="1.5,2.5,0" />
       <orientation method="uniform" min="0,0,0" max="360,0,0" />
@@ -83,7 +83,7 @@
         <box id="o3" size="0.2, 0.3, 0.2" movable="false" />
       </entity>
     </distribute>
-    
+
     <distribute>
       <position method="uniform" min="-2.9,-2.9,0" max="-2,2.9,0" />
       <orientation method="uniform" min="0,0,0" max="360,0,0" />
