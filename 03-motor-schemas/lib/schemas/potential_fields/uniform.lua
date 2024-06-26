@@ -1,5 +1,4 @@
 -- uniform.lua
-
 local uniform = {}
 
 function uniform.calculate(increase_factor)

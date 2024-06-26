@@ -1,8 +1,9 @@
 --- test_utilities.lua ---
-
 local test_utilities = {}
 
-local CONFIG_FILE = "test-motor_schemas.argos"
+local config = require("config")
+
+local CONFIG_FILE = config.CONFIG_FILE
 
 -- Function to read the ARGoS configuration file and obtain the light position
 local function get_light_position_from_argos(config_file)

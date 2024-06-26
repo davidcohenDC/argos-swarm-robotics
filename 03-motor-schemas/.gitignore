@@ -39,8 +39,8 @@ luac.out
 *.x86_64
 *.hex
 
-# Test files
-# every file in test/ that is png and txt
-test/**/*.png
-test/**/*.txt
+
+
+# ignore test/motor_schemas.argos
+test/results/*
 

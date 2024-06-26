@@ -1,17 +1,17 @@
 <?xml version="1.0" ?>
- 
+
 <argos-configuration>
- 
+
   <!-- ************************* -->
   <!-- * General configuration * -->
   <!-- ************************* -->
   <framework>
     <system threads="0" />
-    <experiment length="4000"
-                ticks_per_second="10" />
-    />
+    <experiment length="3000"
+                ticks_per_second="30"
+                random_seed="83199" />
   </framework>
- 
+
   <!-- *************** -->
   <!-- * Controllers * -->
   <!-- *************** -->
@@ -31,15 +31,15 @@
      <params script="controller-motor_schemas.lua" />
    </lua_controller>
 
-    
+
     </controllers>
- 
+
 
   <!-- *********************** -->
   <!-- * Arena configuration * -->
   <!-- *********************** -->
   <arena size="6, 6, 1" center="0,0,0.5" positional_grid_size="6,6,1">
-    
+
     <box id="bn" size="0.1, 6, 0.2" movable="false">
       <body position="2.9, 0, 0"  orientation="0,0,0" />
     </box>
@@ -52,14 +52,14 @@
     <box id="bw" size="6, 0.1, 0.2" movable="false">
       <body position="0,2.9,0" orientation="0,0,0" />
     </box>
- 
+
     <light id="light"
            position="2,0,0.5"
            orientation="0,0,0"
            color="yellow"
            intensity="2"
            medium="leds"/>
-   
+
     <distribute>
       <position method="uniform" min="-2,-2.5,0" max="1.5,2.5,0" />
       <orientation method="uniform" min="0,0,0" max="360,0,0" />
@@ -95,14 +95,14 @@
     </distribute>
 
   </arena>
- 
+
   <!-- ******************* -->
   <!-- * Physics engines * -->
   <!-- ******************* -->
   <physics_engines>
     <dynamics2d id="dyn2d" />
   </physics_engines>
- 
+
   <!-- ********* -->
   <!-- * Media * -->
   <!-- ********* -->
@@ -110,7 +110,7 @@
     <led id="leds" />
   </media>
 
-	
+
   <!-- ****************** -->
   <!-- * Visualization * -->
   <!-- ****************** -->
@@ -125,5 +125,5 @@
       </camera>
     </qt-opengl>
   </visualization>
- 
+
 </argos-configuration>

@@ -1,8 +1,7 @@
 --- utilities.lua ---
-
 local utilities = {}
 
-DEBUG = true
+DEBUG = false
 
 --- Function to perceive maximum sensor reading
 -- @param sensor_type Type of sensor to use

@@ -1,8 +1,9 @@
-local attraction = require("lib.potential_fields.attractive")
-local repulsion = require("lib.potential_fields.repulsive")
-local noise = require("lib.potential_fields.schemas.noise")
-local past_avoid = require("lib.potential_fields.schemas.past_avoid")
-local uniform = require("lib.potential_fields.uniform")
+-- explore.lua
+local attraction = require("lib.schemas.potential_fields.attractive")
+local repulsion = require("lib.schemas.potential_fields.repulsive")
+local uniform = require("lib.schemas.potential_fields.uniform")
+local noise = require("lib.schemas.noise")
+local past_avoid = require("lib.schemas.past_avoid")
 local config = require("config")
 local vector = require("lib.vector")
 

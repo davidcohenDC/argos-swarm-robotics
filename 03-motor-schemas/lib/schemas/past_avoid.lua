@@ -1,5 +1,4 @@
 -- past_avoid.lua
-
 local vector = require("lib.vector")
 local config = require("config")
 

@@ -1,9 +1,11 @@
+-- config.lua
 local config = {
+    CONFIG_FILE = os.getenv("ARGOS_CONFIG_FILE") or "motor_schemas.argos",
     VMAX = 15,
     -- Noise parameters
     NOISE_FACTOR = 1,
     -- Force parameters
-    INITIAL_FORCE_INTENSITY = 4,
+    INITIAL_FORCE_INTENSITY = 4.5,
     MIN_FORCE_INTENSITY = 1.5,
     FORCE_DECAY_FACTOR = 0.9998,
     -- Time parameters
@@ -14,8 +16,8 @@ local config = {
     -- Attraction/repulsion parameters
     LIGHT_THRESHOLD = 0.7,    -- Threshold for deciding when to switch to aggressive behavior
     -- Compound forces parameters
-    AGGRESSIVE_INTENSITY_MULTIPLIER = 4, -- Multiplier to increase attraction force when being aggressive
-    EXPLORE_INTENSITY_MULTIPLIER = 3,    -- Multiplier to increase attraction force when exploring
+    AGGRESSIVE_INTENSITY_MULTIPLIER = 3, -- Multiplier to increase attraction force when being aggressive
+    EXPLORE_INTENSITY_MULTIPLIER = 2,    -- Multiplier to increase attraction force when exploring
 }
 
 return config

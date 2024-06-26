@@ -2,9 +2,9 @@ local config = require("config")
 local velocity = require("lib.velocity")
 local util = require("lib.utilities")
 local test_util = require("lib.test_utilities")
-local aggressive = require("lib.potential_fields.schemas.aggressive")
-local explore = require("lib.potential_fields.schemas.explore")
-local past_avoid = require("lib.potential_fields.schemas.past_avoid")
+local aggressive = require("lib.schemas.aggressive")
+local explore = require("lib.schemas.explore")
+local past_avoid = require("lib.schemas.past_avoid")
 
 -- State variables
 local noise_scale_factor = config.NOISE_FACTOR
@@ -53,5 +53,5 @@ function reset()
 end
 
 function destroy()
-    util.log("Distance: " .. test_util.getDistance())
+    log("Distance: " .. test_util.getDistance())
 end

@@ -18,10 +18,10 @@ can only be used for testing and evaluation purposes.
 2. **Obstacle avoidance**:This behavior prevents the robot from colliding with obstacles like walls, boxes, and other robots.
    * ***Potential field***: Repulsive field.
    * ***Vector Calculation***: The strength of the repulsion should be inversely proportional to the distance from the obstacle.
-3. Noise: Adding a small random component to the robot's movement to ensure it does not get stuck in local minima.
+3. ***Noise***: Adding a small random component to the robot's movement to ensure it does not get stuck in local minima.
    * ***Potential field***: Noise field.
    * ***Vector Calculation***: A small random vectors added to the final movement vector.
-4. Avoiding past positions: This behavior prevents the robot from getting stuck in a loop. Also avoid 
+4. ***Avoiding past positions***: This behavior prevents the robot from getting stuck in a loop. Also avoid 
 oscillations between two positions.
    * ***Potential field***:  Repulsive Field from past positions.
    * ***Vector Calculation***:  Similar to obstacle avoidance but with past positions stored in memory.

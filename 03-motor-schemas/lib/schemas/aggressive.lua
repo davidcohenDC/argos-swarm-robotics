@@ -1,6 +1,7 @@
-local attraction = require("lib.potential_fields.attractive")
-local repulsion = require("lib.potential_fields.repulsive")
-local uniform = require("lib.potential_fields.uniform")
+-- aggressive.lua
+local attraction = require("lib.schemas.potential_fields.attractive")
+local repulsion = require("lib.schemas.potential_fields.repulsive")
+local uniform = require("lib.schemas.potential_fields.uniform")
 local config = require("config")
 local vector = require("lib.vector")
 

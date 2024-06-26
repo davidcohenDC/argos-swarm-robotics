@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 # Read the simulation results
-results_file = 'simulation_results.txt'
+results_file = 'results/simulation_results.txt'
 
 # change directory to be in test folder if not already
 
@@ -42,7 +42,7 @@ plt.legend()
 plt.tight_layout()
 
 # Save the plot
-plt.savefig('distance_plot.png')
+plt.savefig('results/distance_plot.png')
 
 # Show the plot
 plt.show()
@@ -59,7 +59,7 @@ plt.legend()
 plt.tight_layout()
 
 # Save the histogram
-plt.savefig('distance_histogram.png')
+plt.savefig('results/distance_histogram.png')
 
 # Show the histogram
 plt.show()
