@@ -39,8 +39,9 @@ luac.out
 *.x86_64
 *.hex
 
-
-
 # ignore test/motor_schemas.argos
 test/results/*
 
+# IDEA
+.idea/
+.idea/*
