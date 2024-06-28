@@ -1,7 +1,7 @@
 local params = require('hyperparameters')
 local PriorityQueue = require('lib.priority_queue')
 local behaviors = PriorityQueue.new()
-
+local test_utilities = require('lib.test_utilities')
 local nRobotSensed = 0
 
 -- Function to count the number of robots sensed
@@ -36,7 +36,6 @@ end
 
 function step()
     nRobotSensed = CountRAB()
-    log(nRobotSensed)
     local t = robot.random.uniform()  -- random number
     if STATE == params.states.WALK then
         senseAndAct()
@@ -63,4 +62,5 @@ function destroy()
     behaviors:for_each(function(behavior)
         behavior.destroy()
     end)
+    log("Average Neighbor Distance: " .. test_utilities.getAverageNeighborDistance())
 end

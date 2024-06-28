@@ -16,7 +16,6 @@ function wander_obstacle_avoidance.init()
     turning = false
     nsteps = 0
     v_left, v_right = 0, 0
-    log("wander_obstacle_avoidance initialized")
 end
 
 function wander_obstacle_avoidance.reset()
@@ -44,7 +43,6 @@ function wander_obstacle_avoidance.execute()
                 v_left, v_right = -v, v
             end
             robot.wheels.set_velocity(v_left, v_right)
-            log("Turning: v_left = " .. v_left .. ", v_right = " .. v_right)
         else
             nsteps = nsteps + 1
             robot.wheels.set_velocity(params.MAX_VELOCITY, params.MAX_VELOCITY)
@@ -56,7 +54,6 @@ function wander_obstacle_avoidance.execute()
         if nturns % params.NTURNS == 0 then
             turning = false
         end
-        log("Continuing turn: v_left = " .. v_left .. ", v_right = " .. v_right)
     end
 end
 
