@@ -5,7 +5,7 @@ local config = {
     -- Noise parameters
     NOISE_FACTOR = 1,
     -- Force parameters
-    INITIAL_FORCE_INTENSITY = 4.5,
+    INITIAL_FORCE_INTENSITY = 5.5,
     MIN_FORCE_INTENSITY = 1.5,
     FORCE_DECAY_FACTOR = 0.9998,
     -- Time parameters

@@ -1,13 +1,12 @@
 import os
-
 import matplotlib.pyplot as plt
 import pandas as pd
+from scipy.stats import mannwhitneyu
 
 # Read the simulation results
 results_file = 'results/simulation_results.txt'
 
-# change directory to be in test folder if not already
-
+# Change directory to be in the test folder if not already
 if os.getcwd().split('/')[-1].lower().count('test') == 0:
     os.chdir('test')
 
@@ -62,4 +61,52 @@ plt.tight_layout()
 plt.savefig('results/distance_histogram.png')
 
 # Show the histogram
+plt.show()
+
+# Perform the Mann-Whitney U Test
+group1 = data[data['Seed'] % 2 == 0]['DistanceToLight']
+group2 = data[data['Seed'] % 2 != 0]['DistanceToLight']
+
+stat, p_value = mannwhitneyu(group1, group2)
+
+# Print the results
+print(f'Mann-Whitney U Test Statistic: {stat}')
+print(f'P-value: {p_value}')
+
+# Interpret the result
+alpha = 0.05
+if p_value < alpha:
+    result = 'Reject the null hypothesis - there is a significant difference between the groups.'
+else:
+    result = 'Fail to reject the null hypothesis - there is no significant difference between the groups.'
+print(result)
+
+# Create a DataFrame for the results
+results_df = pd.DataFrame({
+    'Group': ['Even Seeds', 'Odd Seeds'],
+    'Count': [len(group1), len(group2)],
+    'Mean DistanceToLight': [group1.mean(), group2.mean()],
+    'Median DistanceToLight': [group1.median(), group2.median()],
+    'Mann-Whitney U Test Statistic': [stat, ''],
+    'P-value': [p_value, ''],
+    'Result': [result, '']
+})
+
+# Save the results table
+results_table_file = 'results/statistical_analysis_results.csv'
+results_df.to_csv(results_table_file, index=False)
+print(f'Statistical analysis results saved to {results_table_file}')
+
+# Plot the results of the Mann-Whitney U Test
+plt.figure(figsize=(10, 6))
+plt.boxplot([group1, group2], labels=['Even Seeds', 'Odd Seeds'])
+plt.title('Boxplot of Distance to Light by Seed Group')
+plt.xlabel('Group')
+plt.ylabel('Distance to Light')
+plt.tight_layout()
+
+# Save the boxplot
+plt.savefig('results/distance_to_light_boxplot.png')
+
+# Show the boxplot
 plt.show()
