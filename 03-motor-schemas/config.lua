@@ -17,7 +17,7 @@ local config = {
     LIGHT_THRESHOLD = 0.7,    -- Threshold for deciding when to switch to aggressive behavior
     -- Compound forces parameters
     AGGRESSIVE_INTENSITY_MULTIPLIER = 3, -- Multiplier to increase attraction force when being aggressive
-    EXPLORE_INTENSITY_MULTIPLIER = 2,    -- Multiplier to increase attraction force when exploring
+    EXPLORE_INTENSITY_MULTIPLIER = 5,    -- Multiplier to increase attraction force when exploring
 }
 
 return config
