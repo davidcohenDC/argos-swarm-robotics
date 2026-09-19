@@ -16,6 +16,10 @@
           {
             "path": "argos-swarm-robotics-*.zip",
             "label": "Controllers, arenas, reports and Docker setup (unzip, then `argos3 -c` or `docker compose run`)"
+          },
+          {
+            "path": "argos3-source.tar.gz",
+            "label": "ARGoS 3 source at the commit the image is built from"
           }
         ],
         "successComment": false,

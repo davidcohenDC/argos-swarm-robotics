@@ -67,8 +67,9 @@ cd argos-swarm-robotics
 docker compose run --rm argos scripts/run.sh 04-swarm-aggregation
 ```
 
-The first run builds ARGoS from source inside the image. It takes a few
-minutes, once. The command runs the lab for 3000 ticks without a window and
+Compose pulls the image from GitHub Packages, ARGoS included; if it cannot,
+it builds it from source, which takes a few minutes, once. Dependencies are
+pinned and not updated. The command runs the lab for 3000 ticks without a window and
 prints what the controller logs at the end: the final distance to the light in
 labs 2 and 3, the mean distance between neighbours in lab 4.
 `scripts/run.sh all 300` runs every lab for 300 ticks, which is what the CI
@@ -93,7 +94,7 @@ with the length, the seed, the camera and no window.
 
 Prefer not to clone? Each
 [release](https://github.com/davidcohenDC/argos-swarm-robotics/releases/latest)
-ships a zip with everything.
+ships a zip with everything, plus the ARGoS source the image is built from.
 
 ## How it is organised
 
@@ -103,7 +104,7 @@ ships a zip with everything.
 03-motor-schemas/         controller-motor_schemas.lua, lib/schemas/, config.lua, motor_schemas.argos, test/
 04-swarm-aggregation/     aggregation.lua, lib/behaviours/, lib/rab.lua, hyperparameters.lua, aggregation.argos, test/
 scripts/                  run.sh (headless run), record.sh (GIFs)
-Dockerfile, compose.yaml  ARGoS built from source at a pinned commit, plus Xvfb and ffmpeg
+Dockerfile, compose.yaml  ARGoS built from source at a pinned commit, plus Xvfb and ffmpeg; published to ghcr.io
 ```
 
 ARGoS has no package for current Ubuntu releases, so the image builds it.

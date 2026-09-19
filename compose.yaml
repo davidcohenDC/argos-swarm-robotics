@@ -1,13 +1,15 @@
 # One image with ARGoS built in; the labs are mounted from the checkout, so
-# what you edit here is what runs there.
+# what you edit here is what runs there. Compose pulls the published image
+# and falls back to building it if the pull fails.
 #
 #   docker compose run --rm argos scripts/run.sh 04-swarm-aggregation
 #   docker compose run --rm argos scripts/record.sh all
 #   docker compose run --rm argos bash
 services:
   argos:
+    image: ghcr.io/davidcohendc/argos-swarm-robotics:latest
     build: .
-    image: argos-swarm-robotics
+    pull_policy: missing
     volumes:
       - .:/work
     working_dir: /work
