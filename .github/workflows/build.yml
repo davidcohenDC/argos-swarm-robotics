@@ -9,6 +9,9 @@ on:
 permissions:
   contents: read
 
+env:
+  IMAGE: ghcr.io/davidcohendc/argos-swarm-robotics
+
 jobs:
   lint:
     name: Lua syntax check
@@ -26,15 +29,16 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - uses: docker/setup-buildx-action@v3
+      - uses: docker/setup-buildx-action@v4
 
       # ARGoS takes a few minutes to compile; the layer is cached between runs.
+      # The tag matches compose.yaml, so compose uses this image instead of pulling.
       - name: Build the image
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           load: true
-          tags: argos-swarm-robotics
+          tags: ${{ env.IMAGE }}:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -47,6 +51,9 @@ jobs:
           test -s docs/01-reactive-controller.gif
           git checkout -- docs
 
+  # semantic-release reads the conventional commits on main, picks the next version and
+  # publishes a GitHub release with the zip and the ARGoS source; the image is then pushed
+  # to GitHub Packages with the same version.
   release:
     name: Release
     needs: [lint, smoke]
@@ -54,10 +61,17 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      packages: write
     steps:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
+
+      - name: Snapshot of the ARGoS source the image is built from
+        run: |
+          commit=$(sed -n 's/^ARG ARGOS_COMMIT=//p' Dockerfile)
+          git clone -q https://github.com/ilpincy/argos3.git /tmp/argos3
+          git -C /tmp/argos3 archive --format=tar.gz --prefix=argos3/ -o "$PWD/argos3-source.tar.gz" "$commit"
 
       - name: Set up Node.js
         uses: actions/setup-node@v7
@@ -68,3 +82,31 @@ jobs:
         run: npx --yes -p semantic-release@24 -p @semantic-release/exec@7 semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Version released by this push, if any
+        id: version
+        run: |
+          tag=$(git describe --tags --exact-match 2>/dev/null \
+            || git ls-remote --tags origin | awk -v sha="$GITHUB_SHA" '$1 == sha { print $2 }' | sed 's#refs/tags/##; s#\^{}##' | head -1)
+          echo "tag=${tag#v}" >> "$GITHUB_OUTPUT"
+
+      - uses: docker/setup-buildx-action@v4
+        if: steps.version.outputs.tag != ''
+
+      - uses: docker/login-action@v4
+        if: steps.version.outputs.tag != ''
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push the image to GitHub Packages
+        if: steps.version.outputs.tag != ''
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ env.IMAGE }}:${{ steps.version.outputs.tag }}
+            ${{ env.IMAGE }}:latest
+          cache-from: type=gha
