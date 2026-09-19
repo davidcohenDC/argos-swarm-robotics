@@ -1,0 +1,70 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: Lua syntax check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: luac -p on every file
+        run: |
+          sudo apt-get update -q && sudo apt-get install -y -q lua5.3
+          find . -name '*.lua' -not -path './.git/*' -print0 | xargs -0 -n1 luac5.3 -p
+
+  smoke:
+    name: Build image & run every lab
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: docker/setup-buildx-action@v3
+
+      # ARGoS takes a few minutes to compile; the layer is cached between runs.
+      - name: Build the image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          load: true
+          tags: argos-swarm-robotics
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Every lab runs 300 ticks headless
+        run: docker compose run --rm argos scripts/run.sh all 300
+
+      - name: Frame grabbing still works (lab 1, 50 ticks)
+        run: |
+          docker compose run --rm argos scripts/record.sh 01-reactive-controller 50 5
+          test -s docs/01-reactive-controller.gif
+          git checkout -- docs
+
+  release:
+    name: Release
+    needs: [lint, smoke]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - name: Run semantic-release
+        run: npx --yes -p semantic-release@24 -p @semantic-release/exec@7 semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
