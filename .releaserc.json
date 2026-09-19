@@ -1,0 +1,27 @@
+{
+  "branches": ["main"],
+  "plugins": [
+    "@semantic-release/commit-analyzer",
+    "@semantic-release/release-notes-generator",
+    [
+      "@semantic-release/exec",
+      {
+        "prepareCmd": "git archive --format=zip --prefix=argos-swarm-robotics-${nextRelease.version}/ -o argos-swarm-robotics-${nextRelease.version}.zip HEAD"
+      }
+    ],
+    [
+      "@semantic-release/github",
+      {
+        "assets": [
+          {
+            "path": "argos-swarm-robotics-*.zip",
+            "label": "Controllers, arenas, reports and Docker setup (unzip, then `argos3 -c` or `docker compose run`)"
+          }
+        ],
+        "successComment": false,
+        "failComment": false,
+        "failTitle": false
+      }
+    ]
+  ]
+}

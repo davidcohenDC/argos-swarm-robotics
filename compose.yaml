@@ -1,0 +1,19 @@
+# One image with ARGoS built in; the labs are mounted from the checkout, so
+# what you edit here is what runs there.
+#
+#   docker compose run --rm argos scripts/run.sh 04-swarm-aggregation
+#   docker compose run --rm argos scripts/record.sh all
+#   docker compose run --rm argos bash
+services:
+  argos:
+    build: .
+    image: argos-swarm-robotics
+    volumes:
+      - .:/work
+    working_dir: /work
+    environment:
+      # Lab 4 parameters (hyperparameters.lua reads them); the report's best set.
+      ALPHA: ${ALPHA:-0.15}
+      BETA: ${BETA:-0.07}
+      S: ${S:-0.01}
+      W: ${W:-0.15}

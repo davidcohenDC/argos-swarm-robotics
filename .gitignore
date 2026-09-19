@@ -1,0 +1,17 @@
+# Lua
+luac.out
+
+# Temporary copies written by scripts/run.sh and scripts/record.sh
+.run-*.argos
+.record-*.argos
+.frames-*/
+
+# Output of the test/ scripts
+*/test/results/
+*/test/**/*.png
+*/test/**/*.txt
+03-motor-schemas/test/motor_schemas.argos
+
+# IDEs
+.idea/
+.vscode/
